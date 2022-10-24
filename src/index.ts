@@ -1,21 +1,18 @@
-import express, { NextFunction } from 'express'
-import imageRoutes from './handlers/image'
+import express from 'express'
+import { routes } from './handlers/image'
 
 const port = 3000
 const app = express()
 
-app.use(
-      '/status',
-      (req: express.Request, res: express.Response, next: NextFunction) => {
-            res.status(200).end('<h1>ok</h1>')
-            next()
-      }
-)
+app.get('/status', (request: express.Request, response: express.Response) => {
+      response.status(200).end('<h1>ok</h1>')
+})
+app.use('/api', routes)
 
-imageRoutes(app)
+app.use('/', routes)
 
 app.listen(port, () => {
-      console.log('server is listening to the port ', port)
+      console.log('\n server is listening to http://localhost:' + port)
 })
 
 export default app

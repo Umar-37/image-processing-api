@@ -2,20 +2,19 @@ import { resizeImage, getDstPath } from '../../utilities/image'
 import fs from 'fs'
 
 describe('image.resizeImage() should', () => {
-      const imgName = 'fjord'
-      const width = 64
-      const height = 64
+      const img = { name: 'icelandwaterfall', width: 64, height: 120 }
+      const { name, width, height } = img
 
-      let dstPath = getDstPath(imgName, +width, +height)
+      let dstPath = getDstPath(name, width, height)
 
       if (fs.existsSync(dstPath)) {
             fs.unlinkSync(dstPath)
       }
 
-      it('create resized image file if not already exist', async () => {
+      it('if the image does not exist, then create it', async () => {
             expect(fs.existsSync(dstPath)).toBeFalsy()
 
-            dstPath = await resizeImage(imgName, width, height)
+            dstPath = await resizeImage(name, width, height)
 
             expect(fs.existsSync(dstPath)).toBeTruthy()
       })

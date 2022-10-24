@@ -1,23 +1,26 @@
 import express, { Request, Response } from 'express'
 import { resizeImage } from '../utilities/image'
+export const routes = express()
 
-async function imagesEnd(req: Request, res: Response) {
+async function imagesEnd(request: Request, response: Response) {
       try {
             const imgDst = await resizeImage(
-                  req.query.filename as string,
-                  req.query.width as unknown as number,
-                  req.query.height as unknown as number
+                  request.query.filename as unknown as string,
+                  request.query.width as unknown as number,
+                  request.query.height as unknown as number
             )
 
-            res.sendFile(imgDst)
+            
+            response.sendFile(imgDst)
       } catch (error) {
-            console.log('Error has occurred:', error)
-            res.status(400).json(error)
+            console.error('Error has occurred:', error)
+            response.status(400).json(error)
       }
 }
 
-async function imageRoutes(app: express.Application) {
-      app.get('/api/images', imagesEnd)
-}
+routes.get('/images', imagesEnd)
 
-export default imageRoutes
+//if the user access unhandled endpoint
+routes.get('/*', (request: Request, response: Response): void => {
+      response.status(404).send('please go to /api/images endpoint')
+})
