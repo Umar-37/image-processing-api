@@ -1,18 +1,18 @@
 {
   "name": "building-a-server-project",
   "version": "1.0.0",
-  "description": "This project aims to give you a real-world scenario in which you would read and write to your disk via a Node.js express server rather than a database. The project you create serves two purposes: to prepare you for setting up scalable code and architecture for real-world projects and tie together some of the most popular middleware and utilities found in Node.js projects. This project barely touches the surface of what is possible but will prove your ability to use what you’ve learned in real-world scenarios.",
+  "description": "for udacity first project.",
   "main": "index.js",
   "scripts": {
+    "nodemon": "nodemon",
     "eslint": "eslint 'src/**/*.ts'",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "prepare": "npm run eslint && npm run prettier && npx tsc",
     "test": "jasmine",
-     "prebuild": "rm -rf build",
+    "prebuild": "rm -rf build",
     "build": "tsc -p ./tsconfig.json",
-     "prestart": "npm run build",
+    "prestart": "npm run build",
     "start": "node ./build/index"
-
   },
   "repository": {
     "type": "git",
@@ -45,8 +45,10 @@
     "fs": "^0.0.1-security",
     "jasmine": "^4.4.0",
     "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
     "supertest": "^6.2.4",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.3"
   }
 }

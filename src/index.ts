@@ -9,8 +9,6 @@ app.get('/status', (request: express.Request, response: express.Response) => {
 })
 app.use('/api', routes)
 
-app.use('/', routes)
-
 app.listen(port, () => {
       console.log('\n server is listening to http://localhost:' + port)
 })

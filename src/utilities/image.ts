@@ -2,28 +2,28 @@ import fs from 'fs'
 import sharp from 'sharp'
 import path from 'path'
 
-// get the full path to the imgs dir
-const fullDir: string = path.resolve(__dirname, '../../assets/full') as string
+// get the full path to the orginal imgs dir
+const orginalImgsDir: string = path.join(
+      __dirname,
+      '../../assets/full'
+) as string
 
 // get the full path to the cached imgs
-const thumbDir: string = path.resolve(
+const cacheImg: string = path.join(
       __dirname,
       '../../assets/cacheImges'
 ) as string
-console.log('the path for orginal imges:', fullDir)
-console.log('cashe imges:', thumbDir)
+console.log('the path for orginal imges:', orginalImgsDir)
+console.log('cashe imges:', cacheImg)
 
 export function getDstPath(
       imgName: string,
       width: number,
       height: number
 ): string {
-      return path.resolve(
-            thumbDir,
-            `${imgName}.width${width}.height${height}.jpg`
-      )
+      return path.join(cacheImg, `${imgName}.width${width}.height${height}.jpg`)
 }
-
+//change this function name
 export async function resizeImage(
       imgName: string,
       width: number,
@@ -34,29 +34,36 @@ export async function resizeImage(
             throw 'invalid width or height'
       }
 
-      const srcPath: string = path.resolve(fullDir, imgName + '.jpg') as string
-      const dstPath: string = getDstPath(imgName, width, height) as string
+      const imgPath: string = path.join(
+            orginalImgsDir,
+            imgName + '.jpg'
+      ) as string
+      const cachedImgPath: string = getDstPath(imgName, width, height) as string
 
       // if img does not exist
-      if (!fs.existsSync(srcPath)) {
-            throw 'not correct file name'
+      if (!fs.existsSync(imgPath)) {
+            throw 'img does not exist'
       }
 
       // check if img already exist
-      if (!fs.existsSync(dstPath)) {
+      if (!fs.existsSync(cachedImgPath)) {
             //if img does not exist in the file system,resize it and save it
-            const img = await sharp(srcPath)
-                  .resize(+width as number, +height as number)
-                  .toFile(dstPath)
+            const img = await sharp(imgPath)
+                  .resize({
+                        width: parseInt(width.toString()),
+                        height: parseInt(height.toString()),
+                  })
+                  .jpeg({ mozjpeg: true })
+                  .toFile(cachedImgPath)
             console.log(
                   'img has been resized and saved on the disk with width=' +
                         img.width,
                   'and height=' + img.height
             )
-            return dstPath
+            return cachedImgPath
       } else {
             console.log('Pull from disk on subsequent access attempts.')
-            return dstPath
+            return cachedImgPath
       }
 }
 

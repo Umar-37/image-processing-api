@@ -10,7 +10,6 @@ async function imagesEnd(request: Request, response: Response) {
                   request.query.height as unknown as number
             )
 
-            
             response.sendFile(imgDst)
       } catch (error) {
             console.error('Error has occurred:', error)
