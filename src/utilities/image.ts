@@ -21,10 +21,9 @@ export function getDstPath(
       width: number,
       height: number
 ): string {
-      return path.join(cacheImg, `${imgName}.width${width}.height${height}.jpg`)
+      return path.join(cacheImg, `${imgName}_width${width}_height${height}.jpg`)
 }
-//change this function name
-export async function resizeImage(
+export async function changeSize(
       imgName: string,
       width: number,
       height: number
@@ -41,13 +40,12 @@ export async function resizeImage(
       const cachedImgPath: string = getDstPath(imgName, width, height) as string
 
       // if img does not exist
-      if (!fs.existsSync(imgPath)) {
-            throw 'img does not exist'
-      }
+      if (!fs.existsSync(imgPath)) throw 'img does not exist'
 
-      // check if img already exist
-      if (!fs.existsSync(cachedImgPath)) {
-            //if img does not exist in the file system,resize it and save it
+      if (fs.existsSync(cachedImgPath)) {
+            console.log('img already cached')
+            return cachedImgPath
+      } else {
             const img = await sharp(imgPath)
                   .resize({
                         width: parseInt(width.toString()),
@@ -61,10 +59,6 @@ export async function resizeImage(
                   'and height=' + img.height
             )
             return cachedImgPath
-      } else {
-            console.log('Pull from disk on subsequent access attempts.')
-            return cachedImgPath
       }
 }
-
 const checkNan = (num: number): boolean => isNaN(num) || num <= 0 || num <= 0

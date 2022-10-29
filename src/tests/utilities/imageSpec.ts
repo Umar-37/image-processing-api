@@ -1,4 +1,4 @@
-import { resizeImage, getDstPath } from '../../utilities/image'
+import { changeSize, getDstPath } from '../../utilities/image'
 import fs from 'fs'
 
 describe('image.resizeImage() should', () => {
@@ -14,7 +14,7 @@ describe('image.resizeImage() should', () => {
       it('if the image does not exist, then create it', async () => {
             expect(fs.existsSync(dstPath)).toBeFalsy()
 
-            dstPath = await resizeImage(name, width, height)
+            dstPath = await changeSize(name, width, height)
 
             expect(fs.existsSync(dstPath)).toBeTruthy()
       })

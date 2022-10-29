@@ -1,19 +1,19 @@
 import express, { Request, Response } from 'express'
-import { resizeImage } from '../utilities/image'
+import { changeSize } from '../utilities/image'
 export const routes = express()
 
 async function imagesEnd(request: Request, response: Response) {
       try {
-            const imgDst = await resizeImage(
+            const imgPath = await changeSize(
                   request.query.filename as unknown as string,
                   request.query.width as unknown as number,
                   request.query.height as unknown as number
             )
 
-            response.sendFile(imgDst)
+            response.sendFile(imgPath)
       } catch (error) {
             console.error('Error has occurred:', error)
-            response.status(400).json(error)
+            response.status(400).send('<span>error has occured</span>')
       }
 }
 
