@@ -1,16 +1,13 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import { routes } from './handlers/image'
 
-const port = 3000
-const app = express()
+export const app = express()
 
-app.get('/status', (request: express.Request, response: express.Response) => {
+app.get('/status', (request: Request, response: Response) => {
       response.status(200).end('<h1>ok</h1>')
 })
 app.use('/api', routes)
 
-app.listen(port, () => {
-      console.log('\n server is listening to http://localhost:' + port)
+app.listen(3000, () => {
+      console.log('\n listening to http://localhost:' + 3000)
 })
-
-export default app
